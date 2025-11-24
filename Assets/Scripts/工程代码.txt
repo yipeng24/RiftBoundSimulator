@@ -1,0 +1,206 @@
+CardData.cs
+[System.Serializable]
+public class CardData
+{
+    public string cardID;        // OGN_005
+    public string displayName;   // 碎裂之火
+    public string cardType;      // 单位/法术...
+    public string tags;
+    ,
+    public int manaCost;
+    public int runeCostNum;
+    public string runeCostType;
+
+    public int power;
+    public int health;
+
+    public string ruleText;
+    public string flavorText;
+    public string artName;
+}
+
+CardDatabase.cs
+using System.Collections.Generic;
+using UnityEngine;
+
+public class CardDatabase : MonoBehaviour
+{
+    public static CardDatabase Instance { get; private set; }
+
+    public List<CardData> allCards = new List<CardData>();
+    private Dictionary<string, CardData> idMap = new Dictionary<string, CardData>();
+
+    // 图片缓存
+    private Dictionary<string, Sprite> artCache = new Dictionary<string, Sprite>();
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+
+        Debug.Log("CardDatabase Awake");
+        LoadFromCsv();
+    }
+
+    void LoadFromCsv()
+    {
+        // Resources/Data/cards.csv
+        TextAsset csv = Resources.Load<TextAsset>("Cards/Data/RiftboundCardList");
+        if (csv == null)
+        {
+            Debug.LogError("cards.csv not found in Resources/Cards/data/");
+            return;
+        }
+
+        string[] lines = csv.text.Split('\n');
+
+        // 第 0 行是表头，从 1 开始
+        for (int i = 1; i < lines.Length; i++)
+        {
+            var line = lines[i].Trim();
+            if (string.IsNullOrEmpty(line)) continue;
+
+            string[] cols = line.Split(',');
+
+            // 防御：列不够就跳过
+            if (cols.Length < 12) continue;
+
+            CardData c = new CardData();
+            c.cardID = cols[0].Trim();
+            c.displayName = cols[1].Trim();
+            c.cardType = cols[2].Trim();
+            c.tags = cols[3].Trim();
+
+            int.TryParse(cols[4], out c.manaCost);
+            int.TryParse(cols[5], out c.runeCostNum);
+            c.runeCostType = cols[6].Trim();
+
+            int.TryParse(cols[7], out c.power);
+            int.TryParse(cols[8], out c.health);
+
+            c.ruleText = cols[9].Trim();
+            c.flavorText = cols[10].Trim();
+            c.artName = cols[11].Trim();
+
+            allCards.Add(c);
+            if (!idMap.ContainsKey(c.cardID))
+                idMap.Add(c.cardID, c);
+        }
+
+        Debug.Log($"CardDatabase loaded {allCards.Count} cards.");
+    }
+
+    public CardData GetByID(string id)
+    {
+        idMap.TryGetValue(id, out var card);
+        return card;
+    }
+
+    // 根据 artName 加载图片：放在 Resources/CardArts/Art_OGN_005.png 这类路径
+    public Sprite GetArt(string artName)
+    {
+        if (string.IsNullOrEmpty(artName)) return null;
+
+        if (artCache.TryGetValue(artName, out var sp))
+            return sp;
+
+        // 注意：这里假设图片在 Resources/CardArts/
+        var sprite = Resources.Load<Sprite>($"Cards/Arts/{artName}");
+        if (sprite == null)
+        {
+            sprite = Resources.Load<Sprite>("Cards/Arts/replaceSpace");
+            Debug.LogWarning($"Art sprite not found: {artName}");
+        }
+        artCache[artName] = sprite;
+        return sprite;
+    }
+}
+
+AllCardsPanel.cs
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class AllCardsPanel : MonoBehaviour
+{
+    public ScrollRect scrollRect;
+    public RectTransform content;
+    public GameObject cardThumbPrefab;   // CardThumbItem prefab
+
+    private List<CardThumbView> views = new List<CardThumbView>();
+
+    void Start()
+    {
+        PopulateAllCards();
+    }
+
+    void PopulateAllCards()
+    {
+        if (CardDatabase.Instance == null)
+        {
+            Debug.LogError("CardDatabase.Instance is null");
+            return;
+        }
+
+        foreach (var card in CardDatabase.Instance.allCards)
+        {
+            var go = Instantiate(cardThumbPrefab, content);
+            var view = go.GetComponent<CardThumbView>();
+            view.Init(card);
+            views.Add(view);
+        }
+
+        if (scrollRect != null)
+            scrollRect.verticalNormalizedPosition = 1f; // 拉到顶部
+    }
+}
+
+CardThumbView.cs
+using TMPro;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
+
+public class CardThumbView : MonoBehaviour
+{
+    public Image artImage;
+    //public TMP_Text nameText;
+    //public Text manaText;
+
+    public CardData Data { get; private set; }
+
+    public void Init(CardData data)
+    {
+        Data = data;
+        //nameText.text = data.displayName;
+        //manaText.text = data.manaCost.ToString();
+
+        if (artImage != null)
+            artImage.sprite = CardDatabase.Instance.GetArt(data.artName);
+    }
+}
+
+DeckBuilderUI.cs
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+
+public class DeckBuilderUI : MonoBehaviour
+{
+    [SerializeField] private Button backButton;
+
+    private void Awake()
+    {
+        backButton.onClick.AddListener(OnBackClicked);
+    }
+
+    private void OnBackClicked()
+    {
+        SceneManager.LoadScene("MainMenuScene");
+    }
+}
