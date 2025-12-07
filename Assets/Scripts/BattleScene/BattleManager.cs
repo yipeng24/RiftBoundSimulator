@@ -120,9 +120,9 @@ public class BattleManager : MonoBehaviour
         selectedBattlefield = CreateRuntimeCard(bfID);
 
         // --- 4. Ó¢ÐÛÓëÖ÷ÅÆ¶Ñ ---
-        CardDataDefinition legendData = CardDatabase.GetCardData(legendID);
+        CardData legendData = CardDatabase.GetCardData(legendID);
         string displayHeroID = remainingIDs.FirstOrDefault(id => {
-            CardDataDefinition d = CardDatabase.GetCardData(id);
+            CardData d = CardDatabase.GetCardData(id);
             return d != null && d.type == CardType.HeroUnit &&
                    (legendData != null && legendData.tags.Contains(d.displayName));
         });
@@ -138,7 +138,7 @@ public class BattleManager : MonoBehaviour
 
         foreach (string id in remainingIDs)
         {
-            CardDataDefinition data = CardDatabase.GetCardData(id);
+            CardData data = CardDatabase.GetCardData(id);
             if (data == null || data.type == CardType.Battlefield) continue;
 
             if (id == displayHeroID)

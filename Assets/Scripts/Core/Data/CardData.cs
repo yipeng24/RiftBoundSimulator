@@ -12,16 +12,16 @@ public enum KeywordType { Quick, Reactive, Aggressive, Defensive, SpellShield, M
 // 迅捷, 反应, 强攻, 坚守, 法盾, 游走, 瞬息, 预知, 绝念, 其他/通用
 
 [Serializable]
-public class CardDataDefinition
+public class CardData
 {
     // 基础信息
-    public string cardID;
-    public string displayName;
-    public CardType type;
-    public string artName;
+    public string cardID;       //  Col01 唯一标识符
+    public string displayName; //Col02 显示名称 
+    public CardType type;      //Col03 卡牌类型 
+    public string artName;    //Col04 美术资源名称 (用于加载对应的美术资源) 
 
     // 费用与战力 (原始数值)
-    public int manaCost;        // 法力费用
+    public int manaCost;        //  法力费用 
     public List<RuneType> runeCost; // 符能费用（打出费用，并非特性）
     public int basePower;       // 基础战力 (Unit)
     public int baseHealth;      // 基础生命/耐久 (Unit/Equipment)
@@ -34,7 +34,7 @@ public class CardDataDefinition
     // 关键优化：结构化存储，方便程序逻辑判断
     public List<KeywordType> keywords; // 关键词列表
     public string ruleText;       // 详细规则文本 (非关键词部分)
-    public string flavorText;
+    public string flavorText;    // 额外描述文本 (仅用于美术和背景故事)
 }
 
 // ====================================================================

@@ -9,9 +9,9 @@ public class CardThumbView : MonoBehaviour, IPointerClickHandler
     //public TMP_Text nameText;
     //public Text manaText;
 
-    public CardDataDefinition Data { get; private set; }
+    public CardData Data { get; private set; }
 
-    public void Init(CardDataDefinition data)
+    public void Init(CardData data)
     {
         Data = data;
         //nameText.text = data.displayName;

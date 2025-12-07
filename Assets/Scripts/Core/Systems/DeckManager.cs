@@ -49,7 +49,7 @@ public class DeckManager : MonoBehaviour
     {
         if (string.IsNullOrEmpty(cardID)) return;
 
-        CardDataDefinition data = CardDatabase.GetCardData(cardID);
+        CardData data = CardDatabase.GetCardData(cardID);
         if (data == null) return; // 错误处理省略
 
         // 获取当前ID数量
@@ -149,7 +149,7 @@ public class DeckManager : MonoBehaviour
             isValid = false;
         }
         // 提前确定传奇数据，以便后续的 Tag 检查
-        CardDataDefinition legend = (legends.Count == 1) ? legends[0] : null;
+        CardData legend = (legends.Count == 1) ? legends[0] : null;
 
         // --- CHECK 2: BATTLEFIELDS (场地) ---
         var battlefields = allCards.Where(c => c.type == CardType.Battlefield).ToList();
@@ -170,7 +170,7 @@ public class DeckManager : MonoBehaviour
         // --- CHECK 4: SELECTED HERO TAG MATCH (选定英雄特性检查) ---
         // 选定英雄必须是 HeroUnit 且其 Tag 必须与 Legend Tag 匹配
         var heroUnits = allCards.Where(c => c.type == CardType.HeroUnit).ToList();
-        var selectedHeroes = new List<CardDataDefinition>();
+        var selectedHeroes = new List<CardData>();
 
         if (legend != null)
         {
@@ -264,7 +264,7 @@ public class DeckManager : MonoBehaviour
         List<string> finalSortedIDs = new List<string>();
 
         // 1. 提取 1 张【传奇】
-        CardDataDefinition legendData = null;
+        CardData legendData = null;
         for (int i = 0; i < tempDeckList.Count; i++)
         {
             var data = CardDatabase.GetCardData(tempDeckList[i]);
