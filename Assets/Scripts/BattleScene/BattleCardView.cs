@@ -25,7 +25,7 @@ public class BattleCardView : MonoBehaviour, IPointerClickHandler
         IsSelectedForMulligan = false; // 重置状态
 
         // 使用静态ID加载资源
-        CardData data = CardDatabase.GetCardData(runtimeCard.CardDataID);
+        CardDataDefinition data = CardDatabase.GetCardData(runtimeCard.CardDataID);
         if (data != null)
         {
             if (artImage != null)

@@ -1,3 +1,5 @@
+// 主要用于定义卡牌数据结构的类文件
+// 包含卡牌的基础信息、费用、战力、特性和规则文本
 using System;
 using System.Collections.Generic;
 
@@ -10,7 +12,7 @@ public enum KeywordType { Quick, Reactive, Aggressive, Defensive, SpellShield, M
 // 迅捷, 反应, 强攻, 坚守, 法盾, 游走, 瞬息, 预知, 绝念, 其他/通用
 
 [Serializable]
-public class CardData
+public class CardDataDefinition
 {
     // 基础信息
     public string cardID;

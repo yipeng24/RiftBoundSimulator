@@ -5,11 +5,11 @@ using UnityEngine; // 用于 Debug.Log 和 TextAsset
 
 public static class CardDatabase
 {
-    private static Dictionary<string, CardData> database = new Dictionary<string, CardData>();
+    private static Dictionary<string, CardDataDefinition> database = new Dictionary<string, CardDataDefinition>();
     private static Dictionary<string, Sprite> artCache = new Dictionary<string, Sprite>();
-    public static CardData GetCardData(string id)
+    public static CardDataDefinition GetCardData(string id)
     {
-        if (database.TryGetValue(id, out CardData card))
+        if (database.TryGetValue(id, out CardDataDefinition card))
         {
             return card;
         }
@@ -74,7 +74,7 @@ public static class CardDatabase
 
             try
             {
-                CardData card = new CardData
+                CardDataDefinition card = new CardDataDefinition
                 {
                     cardID = cardID,
                     displayName = record.ContainsKey("displayName") ? record["displayName"] : string.Empty,
@@ -218,7 +218,7 @@ public static class CardDatabase
         return keywords.Distinct().ToList(); // 确保关键词不重复
     }
 
-    public static Dictionary<string, CardData> GetAllCardData()
+    public static Dictionary<string, CardDataDefinition> GetAllCardData()
     {
         // 返回内部的字典（确保在 LoadAllCards 成功后调用）
         return database;

@@ -30,7 +30,7 @@ public class AllCardsPanel : MonoBehaviour
 
     void PopulateAllCards()
     {
-        Dictionary<string, CardData> allCards = CardDatabase.GetAllCardData();
+        Dictionary<string, CardDataDefinition> allCards = CardDatabase.GetAllCardData();
         if (allCards == null)
         {
             Debug.LogError("CardDatabase.Instance is null");
@@ -39,7 +39,7 @@ public class AllCardsPanel : MonoBehaviour
         int cardIndex = 0;
         foreach (var pair in allCards)
         {
-            CardData cardData = pair.Value;
+            CardDataDefinition cardData = pair.Value;
             string cardID = pair.Key; // <--- 直接使用 Key 作为卡牌 ID
 
             var go = Instantiate(cardThumbPrefab, content);

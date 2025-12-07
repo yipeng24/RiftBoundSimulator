@@ -35,7 +35,7 @@ public class DeckCardView : MonoBehaviour, IPointerClickHandler, IDragHandler, I
         deckPanel = panel;
         IsDraggable = isDraggable; // ÉèÖÃ×´Ì¬
 
-        CardData data = CardDatabase.GetCardData(cardID);
+        CardDataDefinition data = CardDatabase.GetCardData(cardID);
 
         if (data != null)
         {

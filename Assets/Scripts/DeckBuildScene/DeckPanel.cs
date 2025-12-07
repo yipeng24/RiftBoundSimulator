@@ -49,7 +49,7 @@ public class DeckPanel : MonoBehaviour
         if (rawList.Count == 0) return;
 
         // --- A. 确定传奇数据 ---
-        CardData currentLegend = null;
+        CardDataDefinition currentLegend = null;
         string legendID = rawList.FirstOrDefault(id => CardDatabase.GetCardData(id)?.type == CardType.Legend);
         if (legendID != null) currentLegend = CardDatabase.GetCardData(legendID);
 
@@ -94,7 +94,7 @@ public class DeckPanel : MonoBehaviour
     {
         var go = Instantiate(deckCardViewPrefab, contentRect);
         var view = go.GetComponent<DeckCardView>();
-        CardData data = CardDatabase.GetCardData(cardID);
+        CardDataDefinition data = CardDatabase.GetCardData(cardID);
 
         bool isDraggable = true;
 
