@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using RiftBound.Core;
 
 // -------------------------------------------------------------------------
 // 功能：定义卡牌效果的数据结构

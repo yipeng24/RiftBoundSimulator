@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using RiftBound.Core;
 public class ResolutionChain : MonoBehaviour
 {
     public static ResolutionChain Instance { get; private set; }
@@ -23,7 +23,7 @@ public class ResolutionChain : MonoBehaviour
         Debug.Log($"指令入栈: {cmd.GetType().Name}. 当前栈深度: {_stack.Count}");
 
         // 通知 UI：进入闭环状态，显示堆叠
-        BattleUI.Instance.UpdateChainDisplay(_stack);
+        //BattleUI.Instance.UpdateChainDisplay(_stack);
     }
 
     // 结算栈顶指令
@@ -40,7 +40,7 @@ public class ResolutionChain : MonoBehaviour
             // 播放动画并等待
             yield return new WaitForSeconds(1.0f); // 模拟动画时间
 
-            BattleUI.Instance.UpdateChainDisplay(_stack);
+            //BattleUI.Instance.UpdateChainDisplay(_stack);
         }
     }
 }

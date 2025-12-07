@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using RiftBound.Core;
 // ½×¶Î»ùÀà
 public abstract class BasePhase
 {
