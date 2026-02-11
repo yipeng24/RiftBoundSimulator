@@ -1,5 +1,6 @@
 // DeckPanel.cs
 // 父容器，整个卡组显示
+#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ public class DeckPanelParent : MonoBehaviour
     public GameObject deckCardViewPrefab;
 
     private List<DeckSingleCardPrefabView> deckSingleCardViews = new List<DeckSingleCardPrefabView>();
-    [SerializeField] private GameObject dropPlaceholder;
+    [SerializeField] private GameObject dropPlaceholder = null!;
 
     //private static bool _deckModified = false;
 
@@ -94,7 +95,7 @@ public class DeckPanelParent : MonoBehaviour
     {
         var go = Instantiate(deckCardViewPrefab, contentRect_DeckPanelParent);
         var view = go.GetComponent<DeckSingleCardPrefabView>();
-        CardBaseInfo data = CardManager.Instance.CardInstanceHelper.GetCardBaseData(cardID);
+        CardBaseInfo data = CardInstanceHelper.GetCardBaseData(cardID);
 
         bool isDraggable = true;
 
@@ -162,7 +163,7 @@ public class DeckPanelParent : MonoBehaviour
     {
         var options = dropDown_selectDeck.options;
         if (options == null || options.Count == 0) return;
-        string showNewDeckName=null; 
+        string? showNewDeckName =null; 
         if (options.Count > 1)
         {
             int currentIndex = dropDown_selectDeck.value;

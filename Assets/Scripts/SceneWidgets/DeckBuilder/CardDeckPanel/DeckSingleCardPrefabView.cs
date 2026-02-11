@@ -35,7 +35,7 @@ public class DeckSingleCardPrefabView : MonoBehaviour, IPointerClickHandler, IDr
         deckPanelParent = panel;
         IsDraggable = isDraggable; // …Ë÷√◊¥Ã¨
 
-        CardBaseInfo data = CardManager.Instance.CardInstanceHelper.GetCardBaseData(cardID);
+        CardBaseInfo data = CardInstanceHelper.GetCardBaseData(cardID);
 
         if (data != null)
         {

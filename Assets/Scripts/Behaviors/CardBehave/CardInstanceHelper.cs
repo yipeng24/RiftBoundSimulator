@@ -9,17 +9,16 @@ using UnityEngine;
 
 public class CardInstanceHelper
 {
-    private Dictionary<string, CardBaseInfo> _database;
+    private static Dictionary<string, CardBaseInfo> _database;
     public ReadOnlyDictionary<string, CardBaseInfo> Database { get; private set; }
     // 美术资源缓存
     private static Dictionary<string, Sprite> artCache = new Dictionary<string, Sprite>();
     // Todo: 需要优化
-    private const string DEFAULT_RESOURCE_PATH = "Cards/Data/RiftboundCardList";
-    private const string DEFAULT_ART_PATH = "Cards/Arts/";
+
     public void InitializeDatabase()
     {
         if (Database != null) return;
-        TextAsset csv = Resources.Load<TextAsset>(DEFAULT_RESOURCE_PATH);
+        TextAsset csv = Resources.Load<TextAsset>(SysConfig.DEFAULT_CARD_DB_RESOURCE_PATH);
         if (csv != null)
         {
             _database = CardDB_Loader.LoadAllCards(csv.text);
@@ -27,11 +26,11 @@ public class CardInstanceHelper
         }
         else
         {
-            Debug.LogError($"[CardDatabase] 致命错误：无法在路径 'Resources/{DEFAULT_RESOURCE_PATH}' 找到卡牌数据文件！请检查文件位置。");
+            Debug.LogError($"[CardDatabase] 致命错误：无法在路径 'Resources/{SysConfig.DEFAULT_CARD_DB_RESOURCE_PATH}' 找到卡牌数据文件！请检查文件位置。");
         }
     }
 
-    public CardBaseInfo GetCardBaseData(string id)
+    public static CardBaseInfo GetCardBaseData(string id)
     {
         if (_database != null &&_database.TryGetValue(id, out CardBaseInfo card))
         {
@@ -48,14 +47,14 @@ public class CardInstanceHelper
         if (artCache.TryGetValue(artName, out var sp))
             return sp;
         
-        Sprite loadedSprite = Resources.Load<Sprite>(Path.Combine(DEFAULT_ART_PATH,artName));
+        Sprite loadedSprite = Resources.Load<Sprite>(Path.Combine(SysConfig.DEFAULT_ART_PATH, artName));
         if (loadedSprite != null)
         {
             artCache.Add(artName, loadedSprite);
         }
         else
         {
-            Debug.LogWarning($"[CardDatabase] 找不到卡图资源: {Path.Combine(DEFAULT_ART_PATH,artName)}");
+            Debug.LogWarning($"[CardDatabase] 找不到卡图资源: {Path.Combine(SysConfig.DEFAULT_ART_PATH, artName)}");
         }
 
         return loadedSprite;

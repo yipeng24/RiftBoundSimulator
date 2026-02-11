@@ -62,7 +62,7 @@ public class DeckInstanceHelper : IDisposable
     public void AddCardToDeck(string cardID)
     {
         // 获取卡牌基本信息
-        CardBaseInfo cardBaseInfo = _cardInstanceHelper.GetCardBaseData(cardID);
+        CardBaseInfo cardBaseInfo = CardInstanceHelper.GetCardBaseData(cardID);
 
         if (cardBaseInfo == null) return;
         // 首先检查传奇，如果添加的不是传奇，且传奇不存在，提示先添加传奇，
@@ -152,7 +152,7 @@ public class DeckInstanceHelper : IDisposable
     public void RemoveCardFromDeck(string cardID)
     {
         currentDeckCardIDs.Remove(cardID);
-        if (_cardInstanceHelper.GetCardBaseData(cardID).cardType == CardType.Legend)
+        if (CardInstanceHelper.GetCardBaseData(cardID).cardType == CardType.Legend)
             existLegend = false;
         UpdateDeckData();
         SaveDeckWithoutValidate();
@@ -166,7 +166,7 @@ public class DeckInstanceHelper : IDisposable
         LengendCard=null;
         for (int i = 0; i < tempDeckList.Count; i++)
         {
-            var data = _cardInstanceHelper.GetCardBaseData(tempDeckList[i]);
+            var data = CardInstanceHelper.GetCardBaseData(tempDeckList[i]);
             if (data != null && data.cardType == CardType.Legend)
             {
                 LengendCard = data;
@@ -181,7 +181,7 @@ public class DeckInstanceHelper : IDisposable
         // 正序遍历，找到第一个符合条件的
         foreach (var id in tempDeckList)
         {
-            var data = _cardInstanceHelper.GetCardBaseData(id);
+            var data = CardInstanceHelper.GetCardBaseData(id);
             if (data != null && data.cardType == CardType.HeroUnit)
             {
                 if (LengendCard != null && LengendCard.tags != null && LengendCard.tags.Contains(data.displayName))
@@ -212,7 +212,7 @@ public class DeckInstanceHelper : IDisposable
         var runes = new List<string>();
         for (int i = 0; i < tempDeckList.Count; i++)
         {
-            var data = _cardInstanceHelper.GetCardBaseData(tempDeckList[i]);
+            var data = CardInstanceHelper.GetCardBaseData(tempDeckList[i]);
             if (data != null && data.cardType == CardType.Rune)
             {
                 runes.Add(tempDeckList[i]);
@@ -228,7 +228,7 @@ public class DeckInstanceHelper : IDisposable
         var battlefields = new List<string>();
         for (int i = tempDeckList.Count - 1; i >= 0; i--)
         {
-            var data = _cardInstanceHelper.GetCardBaseData(tempDeckList[i]);
+            var data = CardInstanceHelper.GetCardBaseData(tempDeckList[i]);
             if (data != null && data.cardType == CardType.Battlefield)
             {
                 battlefields.Add(tempDeckList[i]);
@@ -257,7 +257,7 @@ public class DeckInstanceHelper : IDisposable
             if (cardIDCountMap.ContainsKey(id)) cardIDCountMap[id]++;
             else cardIDCountMap.Add(id, 1);
 
-            CardBaseInfo card = _cardInstanceHelper.GetCardBaseData(id);
+            CardBaseInfo card = CardInstanceHelper.GetCardBaseData(id);
             if (cardTypeCountMap.ContainsKey(card.cardType)) cardTypeCountMap[card.cardType]++;
             else cardTypeCountMap.Add(card.cardType, 1);
 
@@ -287,7 +287,7 @@ public class DeckInstanceHelper : IDisposable
         }
         SortDeckOrder();
 
-        var allCards = currentDeckCardIDs.Select(id => _cardInstanceHelper.GetCardBaseData(id)).Where(c => c != null).ToList();
+        var allCards = currentDeckCardIDs.Select(id => CardInstanceHelper.GetCardBaseData(id)).Where(c => c != null).ToList();
         if (allCards.Count != 56)
         {
             errorMessage.AppendLine( $"卡组必须包含 56 张卡牌，目前包含 {allCards.Count} 张。");

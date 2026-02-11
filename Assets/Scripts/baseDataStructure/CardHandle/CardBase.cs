@@ -6,12 +6,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// 卡牌类型
-public enum CardType { Unit, HeroUnit, Spell, Equipment, Rune, Battlefield, Legend, ExSpell }
-
-// 符文特性类型
-public enum RunePropertyType { None, Red, Green, Blue, Purple, Orange, Yellow } // 炽烈、翠意、灵光、摧破、混沌、序理
-
 // 打出卡牌的符文消耗
 public class CardRuneCost
 {

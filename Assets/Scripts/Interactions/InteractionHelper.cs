@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -11,8 +12,8 @@ public interface IInteractionHelper
 
 public class InteractionHelper : MonoBehaviour, IInteractionHelper
 {
-    public GameObject messageBoxPrefab;
-    public Transform canvasTransform;
+    public GameObject messageBoxPrefab = null!;
+    public Transform canvasTransform = null!;
     public static InteractionHelper Instance { get; private set; }
     private void Awake()
     {
